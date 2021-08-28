@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Distance Calc</string>
+
+
+    <string name="lowbed">Lowbed</string>
+    <string name="one_ton">1 Ton</string>
+    <string name="three_ton">3 Ton</string>
+    <string name="ten_ton">10 Ton</string>
+    <string name="hilux">HILUX</string>
+
+</resources>

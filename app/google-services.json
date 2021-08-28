@@ -1,0 +1,38 @@
+{
+  "project_info": {
+    "project_number": "963094522410",
+    "project_id": "kidsmana",
+    "storage_bucket": "kidsmana.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963094522410:android:34950bfb71183da9393153",
+        "android_client_info": {
+          "package_name": "com.mrright.distancecalc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963094522410-klsdd6555m1822373bal6qtnloj8jkoa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mrright.distancecalc",
+            "certificate_hash": "0f77ae445b8368f8fb24906e844e5222431fa53e"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJ-BPL56GJLA0mdYzwbY-CGJnHT8ILEf8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
