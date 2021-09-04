@@ -1,6 +1,5 @@
 package com.mrright.distancecalc.di
 
-import android.app.Application
 import android.content.Context
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.net.PlacesClient
@@ -21,7 +20,10 @@ object AppModule {
 	@MapsApiKey
 	@Provides
 	@Singleton
-	fun provideGoogleMapsKey(@ApplicationContext context : Context,) : String = context.getString(R.string.google_maps_key)
+	fun provideGoogleMapsKey(
+		@ApplicationContext
+		context : Context,
+	) : String = context.getString(R.string.google_maps_key)
 
 	@BaseUrl
 	@Provides
@@ -32,7 +34,8 @@ object AppModule {
 	@Provides
 	@Singleton
 	fun providePlacesClient(
-		@ApplicationContext context : Context,
+		@ApplicationContext
+		context : Context,
 	) : PlacesClient = Places.createClient(context)
 
 

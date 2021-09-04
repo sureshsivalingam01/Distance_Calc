@@ -23,9 +23,7 @@ val locationSettingsRequest : LocationSettingsRequest = LocationRequest.create()
 	}
 
 
-val placeFields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS,
-	Place.Field.ADDRESS_COMPONENTS, Place.Field.BUSINESS_STATUS, Place.Field.PHONE_NUMBER, Place.Field.OPENING_HOURS,
-	Place.Field.PLUS_CODE)
+val placeFields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
 
 fun Context.isGpsTurnedOn() : Boolean {
 	val lM = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -53,7 +51,7 @@ fun Context.isGpsTurnedOn() : Boolean {
 
 		//do while for latitude
 		do {
-			b = encoded[index++].toInt() - 63
+			b = encoded[index++].code - 63
 			result = result or (b and 0x1f shl shift)
 			shift += 5
 		} while (b>=0x20)
@@ -67,7 +65,7 @@ fun Context.isGpsTurnedOn() : Boolean {
 
 		//do while for longitude
 		do {
-			b = encoded[index++].toInt() - 63
+			b = encoded[index++].code - 63
 			result = result or (b and 0x1f shl shift)
 			shift += 5
 		} while (b>=0x20)

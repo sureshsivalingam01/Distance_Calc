@@ -45,7 +45,7 @@ class MapsRepoImpl @Inject constructor(
 
 			if (result.isSuccessful && result.body()?.status == "OK") {
 				emit(Resource.Success(result.body()!!))
-				Log.d(TAG, "getDirection::Success::${result.body()?.routes?.size}")
+				Log.d(TAG, "getDirection::Success::${result.body()}")
 			}
 			else {
 				throw Exception("UnKnown Error")

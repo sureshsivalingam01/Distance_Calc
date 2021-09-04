@@ -40,6 +40,7 @@ class PlacesRepoImpl @Inject constructor(
 	override suspend fun fetchPlace(fetchPlaceRequest : FetchPlaceRequest) : Flow<Resource<Place>> = flow {
 		try {
 			val result = placesClient.awaitFetchPlace(fetchPlaceRequest)
+
 			Log.d(TAG, "fetchPlace::Success::${result.place.latLng}")
 			emit(Resource.Success(result.place))
 		}

@@ -6,7 +6,17 @@
     app:startDestination="@id/mapsFragment">
     <fragment
         android:id="@+id/mapsFragment"
-        android:name="com.mrright.distancecalc.presentation.mapFragment.MapsFragment"
+        android:name="com.mrright.distancecalc.presentation.map_fragment.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
+    <fragment
+        android:id="@+id/truckFragment"
+        android:name="com.mrright.distancecalc.presentation.truck_fragment.TruckFragment"
+        android:label="truck_fragment"
+        tools:layout="@layout/truck_fragment" />
+    <fragment
+        android:id="@+id/haulageFragment"
+        android:name="com.mrright.distancecalc.presentation.haulage_fragment.HaulageFragment"
+        android:label="haulage_fragment"
+        tools:layout="@layout/haulage_fragment" />
 </navigation>

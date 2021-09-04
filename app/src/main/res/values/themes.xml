@@ -15,7 +15,6 @@
     </style>
 
 
-
     <style name="TopCornerCard" parent="@style/Widget.MaterialComponents.CardView">
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialCardView.Top
         </item>
@@ -43,6 +42,15 @@
         <item name="cornerSizeBottomRight">20dp</item>
         <item name="cornerSizeBottomLeft">20dp</item>
     </style>
+
+    <style name="Theme.DistanceCalc.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.DistanceCalc.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.DistanceCalc.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

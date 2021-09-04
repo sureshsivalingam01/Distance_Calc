@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/truckFragment2">
+    <fragment
+        android:id="@+id/truckFragment2"
+        android:name="com.mrright.distancecalc.presentation.truck_fragment.TruckFragment"
+        android:label="truck_fragment"
+        tools:layout="@layout/truck_fragment">
+        <action
+            android:id="@+id/action_truckFragment2_to_addTruckActivity"
+            app:destination="@id/addTruckActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/addTruckActivity"
+        android:name="com.mrright.distancecalc.presentation.truck_fragment.AddTruckActivity"
+        android:label="AddTruckActivity">
+        <argument
+            android:name="truckId"
+            android:defaultValue=""
+            app:argType="string" />
+        <argument
+            android:name="view"
+            android:defaultValue="NEW"
+            app:argType="com.mrright.distancecalc.utils.constants.View" />
+    </activity>
+</navigation>
