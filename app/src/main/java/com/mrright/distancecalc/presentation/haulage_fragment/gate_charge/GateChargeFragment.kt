@@ -77,7 +77,7 @@ class GateChargeFragment : Fragment() {
 		lifecycleScope.launchWhenCreated {
 			viewModel.msg.collect {
 				when (it) {
-					is Toast -> requireContext().toast(it.msg, it.duration)
+					is Toast -> toast(it.msg, it.duration)
 					else -> Unit
 				}
 			}

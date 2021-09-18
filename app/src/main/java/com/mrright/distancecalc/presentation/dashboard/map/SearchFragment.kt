@@ -1,4 +1,4 @@
-package com.mrright.distancecalc.presentation.map_fragment
+package com.mrright.distancecalc.presentation.dashboard.map
 
 import android.content.Context
 import android.os.Bundle
@@ -72,18 +72,15 @@ class SearchFragment : DialogFragment() {
 		editText()
 		collectPlaces()
 
-
 	}
 
 	private fun editText() {
 
 		bind.etSearch.addTextChangedListener {
-			val predictionsRequest = FindAutocompletePredictionsRequest.builder()
-				.apply {
-					sessionToken = autoCompleteSessionToken
-					query = it.toString()
-				}
-				.build()
+			val predictionsRequest = FindAutocompletePredictionsRequest.builder().apply {
+				sessionToken = autoCompleteSessionToken
+				query = it.toString()
+			}.build()
 
 			viewModel.placesAutoCompletePredicts(predictionsRequest)
 
@@ -91,17 +88,16 @@ class SearchFragment : DialogFragment() {
 	}
 
 	private fun init() {
-		search = if (arguments?.getString(SEARCH_TYPE) == Search.FROM.value) Search.FROM else Search.TO
-		bind.etSearchInput.hint = search.value
+		search =
+			if (arguments?.getString(SEARCH_TYPE) == Search.FROM.value) Search.FROM else Search.TO
+		bind.etFrom.hint = search.value
 		searchText = arguments?.getString(SEARCH_TEXT)!!
 		if (searchText.isNotEmpty()) {
 
-			val predictionsRequest = FindAutocompletePredictionsRequest.builder()
-				.apply {
-					sessionToken = autoCompleteSessionToken
-					query = searchText
-				}
-				.build()
+			val predictionsRequest = FindAutocompletePredictionsRequest.builder().apply {
+				sessionToken = autoCompleteSessionToken
+				query = searchText
+			}.build()
 
 			viewModel.placesAutoCompletePredicts(predictionsRequest)
 
@@ -121,8 +117,7 @@ class SearchFragment : DialogFragment() {
 			viewModel.autoCompletePredict.observe(viewLifecycleOwner) {
 				if (it.isNullOrEmpty()) {
 					bind.rvSearchResults.gone()
-				}
-				else {
+				} else {
 
 					placesAdapter = PlacesAdapter(it) { placeId, placeText ->
 						viewModel.fetchPlace(search, placeId, placeText)

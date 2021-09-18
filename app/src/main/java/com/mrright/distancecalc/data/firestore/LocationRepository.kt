@@ -1,8 +1,8 @@
 package com.mrright.distancecalc.data.firestore
 
-import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.CollectionReference
 import com.mrright.distancecalc.data.Source
-import com.mrright.distancecalc.utils.constants.Collection
+import com.mrright.distancecalc.di.Location
 import com.mrright.distancecalc.utils.helpers.errorLog
 import com.mrright.distancecalc.utils.helpers.infoLog
 import kotlinx.coroutines.flow.Flow
@@ -12,10 +12,9 @@ import javax.inject.Inject
 
 
 class LocationRepoImpl @Inject constructor(
-	db : DocumentReference,
+	@Location private val location: CollectionReference,
 ) : LocationRepository {
 
-	private val locationRef = db.collection(Collection.LOCATION.value)
 
 	override suspend fun addLocation(
 		locationName : String, area : String, haulageRate : Double, tollCharge : Double, faf : Double, gateCharge : Double, total : Double
@@ -32,7 +31,7 @@ class LocationRepoImpl @Inject constructor(
 				Pair("total", total),
 			)
 
-			locationRef.add(map).await()
+			location.add(map).await()
 			infoLog("addLocation :: Success")
 			emit(Source.Success)
 		} catch (e : Exception) {

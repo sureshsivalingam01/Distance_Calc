@@ -41,10 +41,10 @@ class AreaFragment : Fragment() {
 		lifecycleScope.launchWhenCreated {
 			viewModel.msg.collect {
 				when (it) {
-					is SnackBar -> Unit
-					is Toast -> requireContext().toast(it.msg, it.duration)
-					is ToastStringRes -> Unit
-				}
+                    is SnackBar -> Unit
+                    is Toast -> toast(it.msg, it.duration)
+                    is ToastStringRes -> Unit
+                }
 			}
 		}
 	}

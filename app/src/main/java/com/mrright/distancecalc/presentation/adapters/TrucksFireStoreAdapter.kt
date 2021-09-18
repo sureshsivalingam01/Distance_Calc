@@ -43,13 +43,20 @@ class TrucksFireStoreAdapter(
 		position : Int,
 		truckDto : TruckDTO,
 	) {
-		with(holder.bind) {
-			txtTruckType.also {
-				it.text = it.context.resources.getString(R.string.truck_type_param, truckDto.truckType)
-			}
-			txtAllowancePerKm.also {
-				it.text = it.context.resources.getString(R.string.allowance_per_km_param, truckDto.allowancePerKm)
-			}
-		}
-	}
+
+        val truck = truckDto.toTruck()
+
+        with(holder.bind) {
+            txtTruckType.also {
+                it.text =
+                    it.context.resources.getString(R.string.truck_type_param, truck.truckType.value)
+            }
+            txtAllowancePerKm.also {
+                it.text = it.context.resources.getString(
+                    R.string.allowance_per_km_param,
+                    truck.allowancePerKm.value
+                )
+            }
+        }
+    }
 }

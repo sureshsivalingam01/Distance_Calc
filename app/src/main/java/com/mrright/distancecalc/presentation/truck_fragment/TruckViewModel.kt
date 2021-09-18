@@ -60,8 +60,11 @@ class TruckViewModel @Inject constructor(
 	}
 
 	fun setAllowancePerKm(text : String) {
-		truck.value.allowancePerKm.value = text
-	}
+        truck.value.allowancePerKm.value = when (text.toDoubleOrNull()) {
+            null -> truck.value.allowancePerKm.value
+            else -> text
+        }
+    }
 
 	/////////////////
 
@@ -79,8 +82,14 @@ class TruckViewModel @Inject constructor(
 				it.removeAt(id)
 			}
 		} else {
-			deleteRange(id)
-		}
+            if (rangeList.value[id].id == "") {
+                rangeList.value.also {
+                    it.removeAt(id)
+                }
+            } else {
+                deleteRange(id)
+            }
+        }
 
 
 	}
@@ -103,26 +112,39 @@ class TruckViewModel @Inject constructor(
 
 	fun onFromRangeChange(id : Int, fromRange : String) {
 		rangeList.value.also {
-			it[id].fromRange.value = fromRange
-		}
+
+            it[id].fromRange.value = when (fromRange.toIntOrNull()) {
+                null -> it[id].fromRange.value
+                else -> fromRange
+            }
+        }
 	}
 
 	fun onToRangeChange(id : Int, toRange : String) {
 		rangeList.value.also {
-			it[id].toRange.value = toRange
-		}
+            it[id].toRange.value = when (toRange.toIntOrNull()) {
+                null -> it[id].toRange.value
+                else -> toRange
+            }
+        }
 	}
 
 	fun onAllowanceChange(id : Int, allowance : String) {
 		rangeList.value.also {
-			it[id].allowance.value = allowance
-		}
+            it[id].allowance.value = when (allowance.toDoubleOrNull()) {
+                null -> it[id].allowance.value
+                else -> allowance
+            }
+        }
 	}
 
 	fun onAdditionalChange(id : Int, additional : String) {
 		rangeList.value.also {
-			it[id].additional.value = additional
-		}
+            it[id].additional.value = when (additional.toDoubleOrNull()) {
+                null -> it[id].additional.value
+                else -> additional
+            }
+        }
 	}
 
 
@@ -141,8 +163,14 @@ class TruckViewModel @Inject constructor(
 				it.removeAt(id)
 			}
 		} else {
-			deleteLocation(id)
-		}
+            if (locationList.value[id].id == "") {
+                locationList.value.also {
+                    it.removeAt(id)
+                }
+            } else {
+                deleteLocation(id)
+            }
+        }
 	}
 
 	private fun deleteLocation(id : Int) {
@@ -168,8 +196,11 @@ class TruckViewModel @Inject constructor(
 
 	fun onLocationAllowanceChange(id : Int, text : String) {
 		locationList.value.also {
-			it[id].allowance.value = text
-		}
+            it[id].allowance.value = when (text.toDoubleOrNull()) {
+                null -> it[id].allowance.value
+                else -> text
+            }
+        }
 	}
 
 	//////////////////
@@ -193,14 +224,16 @@ class TruckViewModel @Inject constructor(
 	}
 
 	private suspend fun updateList() {
+
 		withContext(Dispatchers.IO) {
+
 			_truckState.value = TruckState.Loading("Updating")
 
 			trucksRepo.updateTruck(
-				truck = truck.value.toTruckDto(),
-				ranges = rangeList.value.toRangesDto(),
-				locations = locationList.value.toLocationDto(),
-			).collect {
+                truckDto = truck.value.toTruckDto(),
+                ranges = rangeList.value.map { it.toRangeDto() },
+                locations = locationList.value.map { it.toLocationDto() },
+            ).collect {
 				when (it) {
 					is Source.Failure -> {
 						_truckState.value = TruckState.Error()
@@ -222,10 +255,10 @@ class TruckViewModel @Inject constructor(
 			_truckState.value = TruckState.Loading("Adding")
 
 			trucksRepo.addTruck(
-				truck = truck.value.toTruckDto(),
-				ranges = rangeList.value.toRangesDto(),
-				locations = locationList.value.toLocationDto(),
-			).collect {
+                truckDto = truck.value.toTruckDto(),
+                ranges = rangeList.value.map { it.toRangeDto() },
+                locations = locationList.value.map { it.toLocationDto() },
+            ).collect {
 				when (it) {
 					is Source.Failure -> {
 						_msgChannel.send(MessageEvent.Toast("Failed"))
@@ -258,20 +291,23 @@ class TruckViewModel @Inject constructor(
 	private fun getValues() {
 		viewModelScope.launch(Dispatchers.IO) {
 
-			_truckState.value = TruckState.Loading("Success")
+            _truckState.value = TruckState.Loading("Success")
 
-			trucksRepo.getTruck(truck.value.id).collect {
-				when (it) {
-					is Resource.Failure -> {
-						_truckState.value = TruckState.Error(it.ex.message ?: "")
-						_msgChannel.send(MessageEvent.Toast(it.ex.message ?: ""))
-					}
-					is Resource.Success -> {
-						_truckState.value = TruckState.Got
-						truck.value = it.value.toTruck()
-						rangeList.value = it.value.ranges.toRanges()
-						locationList.value = it.value.locations.toLocations()
-					}
+            trucksRepo.getTruck(truck.value.id).collect { truck ->
+                when (truck) {
+                    is Resource.Failure -> {
+                        _truckState.value = TruckState.Error(truck.ex.message ?: "")
+                        _msgChannel.send(MessageEvent.Toast(truck.ex.message ?: ""))
+                    }
+                    is Resource.Success -> {
+                        this@TruckViewModel.truck.value = truck.value.toTruck()
+                        rangeList.value =
+                            truck.value.ranges.sortedWith(compareBy { it.fromRange }).toRanges()
+                        locationList.value =
+                            truck.value.locations.sortedWith(compareBy { it.allowance })
+                                .toLocations()
+                        _truckState.value = TruckState.Got
+                    }
 				}
 			}
 		}

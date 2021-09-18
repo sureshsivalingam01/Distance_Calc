@@ -67,7 +67,7 @@ class FafFragment : Fragment() {
 		lifecycleScope.launchWhenCreated {
 			viewModel.msg.collect {
 				when (it) {
-					is MessageEvent.Toast -> requireContext().toast(it.msg, it.duration)
+					is MessageEvent.Toast -> toast(it.msg, it.duration)
 					else -> Unit
 				}
 			}

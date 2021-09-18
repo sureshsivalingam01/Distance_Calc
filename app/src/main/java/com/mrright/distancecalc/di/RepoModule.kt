@@ -1,6 +1,7 @@
 package com.mrright.distancecalc.di
 
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.mrright.distancecalc.data.api.GoogleMapsService
 import com.mrright.distancecalc.data.api.repositories.MapsRepoImpl
@@ -42,27 +43,38 @@ object RepoModule {
 		db : DocumentReference,
 	) : DbRepository = DbRepoImpl(db)
 
-	@Provides
-	@ViewModelScoped
-	fun provideAreaRepo(
-		@Database
-		db : DocumentReference,
-	) : AreaRepository = AreaRepoImpl(db)
+    @Provides
+    @ViewModelScoped
+    fun provideAreaRepo(
+        @Area
+        area: CollectionReference,
+    ): AreaRepository = AreaRepoImpl(area)
 
 
-	@Provides
-	@ViewModelScoped
-	fun provideLocationRepo(
-		@Database
-		db : DocumentReference,
-	) : LocationRepository = LocationRepoImpl(db)
+    @Provides
+    @ViewModelScoped
+    fun provideLocationRepo(
+        @Location
+        location: CollectionReference,
+    ): LocationRepository = LocationRepoImpl(location)
 
 
-	@Provides
-	@ViewModelScoped
-	fun provideTruckRepo(
-		@Database
-		db : DocumentReference,
-	) : TruckRepository = TruckRepoImpl(db)
+    @Provides
+    @ViewModelScoped
+    fun provideTruckRepo(
+        @Truck
+        truck: CollectionReference,
+    ): TruckRepository = TruckRepoImpl(truck)
+
+
+    @Provides
+    @ViewModelScoped
+    fun provideHistoryRepo(
+        @History
+        history: CollectionReference,
+        @Country
+        country: CollectionReference,
+    ): HistoryRepository = HistoryRepoImpl(history, country)
+
 
 }

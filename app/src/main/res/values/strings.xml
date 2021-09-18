@@ -17,6 +17,10 @@
     <string name="trucks">Trucks</string>
     <string name="haulage">Haulage</string>
 
+    <string name="map">Map</string>
+    <string name="history">History</string>
+
+
     <string name="area">Area</string>
     <string name="location">Location</string>
     <string name="faf">FAF</string>

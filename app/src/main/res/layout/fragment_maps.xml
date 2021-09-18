@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.map_fragment.MapsFragment">
+    tools:context=".presentation.dashboard.map.MapsFragment">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardSearch"
@@ -21,11 +21,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:paddingHorizontal="10dp"
             android:paddingTop="10dp">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/etSearchInput"
+                android:id="@+id/etFrom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="From Location"
@@ -39,9 +41,10 @@
                     android:id="@+id/etFromLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionSearch"
-                    android:inputType="none"
-                    android:maxLines="1" />
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:minLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -55,38 +58,17 @@
                 app:boxBackgroundMode="outline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/etSearchInput">
+                app:layout_constraintTop_toBottomOf="@id/etFrom">
 
                 <!--this is the actual edit text which takes the input-->
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etToLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionSearch"
-                    android:inputType="none"
-                    android:maxLines="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputTxtTruck"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:hint="Select Truck"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/etTo">
-
-
-                <AutoCompleteTextView
-                    android:id="@+id/spinTruck"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none" />
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:minLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,9 +79,9 @@
                 android:layout_marginTop="3dp"
                 android:text="Get Route"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/inputTxtTruck"
-                app:layout_constraintStart_toStartOf="@+id/inputTxtTruck"
-                app:layout_constraintTop_toBottomOf="@+id/inputTxtTruck" />
+                app:layout_constraintEnd_toEndOf="@+id/etTo"
+                app:layout_constraintStart_toStartOf="@+id/etTo"
+                app:layout_constraintTop_toBottomOf="@+id/etTo" />
 
             <ImageView
                 android:id="@+id/imgClose"
@@ -108,7 +90,7 @@
                 android:src="@drawable/ic_baseline_close_24"
                 app:layout_constraintBottom_toBottomOf="@+id/btnGetRoute"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputTxtTruck" />
+                app:layout_constraintTop_toTopOf="@+id/btnGetRoute" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -132,25 +114,49 @@
             android:paddingHorizontal="10dp"
             android:paddingBottom="10dp">
 
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputTxtTruck"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="3dp"
+                android:hint="Select Truck"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/txtTotalKm"
+                app:layout_constraintEnd_toStartOf="@+id/txt_input_truck"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <AutoCompleteTextView
+                    android:id="@+id/spinTruck"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/txt_input_truck"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginStart="3dp"
                 android:hint="Select Route"
-                app:layout_constraintBottom_toTopOf="@+id/txtTotalKm"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintBottom_toBottomOf="@+id/inputTxtTruck"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/inputTxtTruck"
+                app:layout_constraintTop_toTopOf="@+id/inputTxtTruck">
+
 
                 <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                     android:id="@+id/txt_route"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:inputType="none" />
+                    android:inputType="none"
+                    tools:ignore="SpeakableTextPresentCheck" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -197,8 +203,6 @@
                 android:id="@+id/txtRoundUpAllowance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginBottom="4dp"
                 android:text="RoundUpAllowance : 50"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -207,21 +211,19 @@
                 android:id="@+id/txtResult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
                 android:text="Result"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/txt_input_truck"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/inputTxtTruck"
+                app:layout_constraintStart_toStartOf="@+id/inputTxtTruck"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="txtRoundUpAllowance,txtTotalKm,txtLocationAllowance,txtAllowance" />
+                app:constraint_referenced_ids="txtRoundUpAllowance,txtTotalKm,txtLocationAllowance,txtAllowance"
+                tools:layout_editor_absoluteX="10dp" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -251,5 +253,19 @@
         android:src="@drawable/ic_baseline_search_24"
         app:layout_constraintBottom_toTopOf="@+id/cardResult"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_baseline_arrow_drop_up_24"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toTopOf="@+id/fab_search"
+        app:layout_constraintEnd_toEndOf="@+id/fab_search"
+        app:layout_constraintStart_toStartOf="@+id/fab_search"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

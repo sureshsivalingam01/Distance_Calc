@@ -32,3 +32,6 @@ fun Any.wtfLog(
 	msg : String = this::class.java.simpleName,
 	tr : Throwable? = null,
 ) = Log.wtf(this::class.java.simpleName, msg, tr)
+
+
+

@@ -95,7 +95,7 @@ class AddLocationFragment : DialogFragment() {
 	private fun clicks() {
 		bind.btnAdd.setOnClickListener {
 
-			requireContext().toast("TODO")
+			toast("TODO")
 			/*viewModel.addLocation(
 				locationName = bind.etLocationName.text.toString(),
 				area = bind.etSelectArea.text.toString(),
@@ -114,7 +114,7 @@ class AddLocationFragment : DialogFragment() {
 			viewModel.msg.collect {
 				when (it) {
 					is MessageEvent.SnackBar -> Unit
-					is MessageEvent.Toast -> requireContext().toast(it.msg, it.duration)
+					is MessageEvent.Toast -> toast(it.msg, it.duration)
 					is MessageEvent.ToastStringRes -> Unit
 				}
 			}

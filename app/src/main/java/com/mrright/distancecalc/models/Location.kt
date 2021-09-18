@@ -3,6 +3,7 @@ package com.mrright.distancecalc.models
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.mrright.distancecalc.data.firestore.models.LocationDto
+import com.mrright.distancecalc.utils.helpers.checkEmptyToDouble
 
 data class Location(
 	var locationName : MutableState<String> = mutableStateOf(""),
@@ -21,11 +22,3 @@ data class Location(
 	}
 }
 
-
-fun List<Location>.toLocationDto() : List<LocationDto> {
-	val list = mutableListOf<LocationDto>()
-	this.forEach {
-		list.add(it.toLocationDto())
-	}
-	return list
-}

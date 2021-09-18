@@ -3,6 +3,7 @@ package com.mrright.distancecalc.models
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.mrright.distancecalc.data.firestore.models.TruckDto
+import com.mrright.distancecalc.utils.helpers.checkEmptyToDouble
 
 data class Truck(
 	var truckType : MutableState<String> = mutableStateOf(""),

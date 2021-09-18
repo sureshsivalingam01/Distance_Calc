@@ -10,12 +10,15 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.mrright.distancecalc.presentation.states_and_events.MessageEvent
 import com.mrright.distancecalc.presentation.ui.theme.DistanceCalcTheme
+import com.mrright.distancecalc.utils.constants.Remove
 import com.mrright.distancecalc.utils.constants.View
 import com.mrright.distancecalc.utils.helpers.toast
 import dagger.hilt.android.AndroidEntryPoint
@@ -80,10 +83,10 @@ class AddTruckActivity : ComponentActivity() {
 	private fun collectMsgs() {
 		lifecycleScope.launchWhenCreated {
 			viewModel.msg.collect {
-				when (it) {
-					is MessageEvent.Toast -> applicationContext.toast(it.msg, it.duration)
-					else -> Unit
-				}
+                when (it) {
+                    is MessageEvent.Toast -> toast(it.msg, it.duration)
+                    else -> Unit
+                }
 			}
 		}
 	}
@@ -92,15 +95,25 @@ class AddTruckActivity : ComponentActivity() {
 	@Composable
 	fun Main() {
 
-		val ranges = viewModel.rangeList.value
+        val openDialog = remember { mutableStateOf(false) }
 
-		val locations = viewModel.locationList.value
+        val mode = remember {
+            mutableStateOf(Remove.NONE)
+        }
 
-		val viewState = viewModel.viewState.value
+        val id = remember {
+            mutableStateOf(-1)
+        }
+
+        val ranges = viewModel.rangeList.value
+
+        val locations = viewModel.locationList.value
+
+        val viewState = viewModel.viewState.value
 
 
-		when (viewModel.truckState.collectAsState().value) {
-			is TruckState.Loading -> {
+        when (viewModel.truckState.collectAsState().value) {
+            is TruckState.Loading -> {
 				Column(
 					modifier = Modifier.fillMaxSize(),
 					verticalArrangement = Arrangement.Center,
@@ -134,15 +147,19 @@ class AddTruckActivity : ComponentActivity() {
 
 						itemsIndexed(ranges) { index, range ->
 							AddRange(
-								id = index,
-								range = range,
-								size = ranges.size,
-								remove = viewModel::removeRange,
-								onFromRangeChange = viewModel::onFromRangeChange,
-								onToRangeChange = viewModel::onToRangeChange,
-								onAllowanceChange = viewModel::onAllowanceChange,
-								onAdditionalChange = viewModel::onAdditionalChange,
-							)
+                                id = index,
+                                range = range,
+                                size = ranges.size,
+                                remove = {
+                                    mode.value = Remove.RANGE
+                                    id.value = it
+                                    openDialog.value = true
+                                },
+                                onFromRangeChange = viewModel::onFromRangeChange,
+                                onToRangeChange = viewModel::onToRangeChange,
+                                onAllowanceChange = viewModel::onAllowanceChange,
+                                onAdditionalChange = viewModel::onAdditionalChange,
+                            )
 						}
 
 
@@ -158,13 +175,17 @@ class AddTruckActivity : ComponentActivity() {
 
 						itemsIndexed(locations) { index, location ->
 							AddLocation(
-								id = index,
-								location = location,
-								size = locations.size,
-								remove = viewModel::removeLocation,
-								onLocationChange = viewModel::onLocationNameChange,
-								onAllowanceChange = viewModel::onLocationAllowanceChange,
-							)
+                                id = index,
+                                location = location,
+                                size = locations.size,
+                                remove = {
+                                    mode.value = Remove.LOCATION
+                                    id.value = it
+                                    openDialog.value = true
+                                },
+                                onLocationChange = viewModel::onLocationNameChange,
+                                onAllowanceChange = viewModel::onLocationAllowanceChange,
+                            )
 						}
 
 						item {
@@ -172,23 +193,37 @@ class AddTruckActivity : ComponentActivity() {
 								modifier = Modifier.fillMaxWidth(),
 								horizontalArrangement = Arrangement.Center,
 							) {
-								Button(
-									onClick = {
-										viewModel.addAll()
-									}, modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
-								) {
-									Text(text = if (viewState == View.NEW) "Add" else "Update")
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+                                Button(
+                                    onClick = {
+                                        viewModel.addAll()
+                                    }, modifier = Modifier.padding(top = 4.dp, bottom = 8.dp)
+                                ) {
+                                    Text(text = if (viewState == View.NEW) "Add" else "Update")
+                                }
+                            }
+                        }
+                    }
+
+                    DialogToDelete(
+                        openDialog = openDialog.value,
+                        mode = mode.value,
+                        id = id.value,
+                        onDialogDismiss = {
+                            openDialog.value = false
+                        }, onRemove = { mode, id ->
+                            when (mode) {
+                                Remove.RANGE -> viewModel.removeRange(id)
+                                Remove.LOCATION -> viewModel.removeLocation(id)
+                                Remove.NONE -> Unit
+                            }
+                        })
+                }
+            }
 
 
-	}
+        }
 
 
+    }
 }
 

@@ -3,6 +3,8 @@ package com.mrright.distancecalc.models
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.mrright.distancecalc.data.firestore.models.RangeDto
+import com.mrright.distancecalc.utils.helpers.checkEmptyToDouble
+import com.mrright.distancecalc.utils.helpers.checkEmptyToInt
 
 data class Range(
 	var fromRange : MutableState<String> = mutableStateOf(""),
@@ -14,24 +16,14 @@ data class Range(
 
 	fun toRangeDto() : RangeDto {
 		return RangeDto(
-			fromRange.value.checkEmptyToDouble(),
-			toRange.value.checkEmptyToDouble(),
-			allowance.value.checkEmptyToDouble(),
-			additional.value.checkEmptyToDouble(),
-		).also {
+            fromRange.value.checkEmptyToInt(),
+            toRange.value.checkEmptyToInt(),
+            allowance.value.checkEmptyToDouble(),
+            additional.value.checkEmptyToDouble(),
+        ).also {
 			it.id = id
 		}
 	}
 }
 
 
-fun List<Range>.toRangesDto() : List<RangeDto> {
-	val list = mutableListOf<RangeDto>()
-	this.forEach {
-		list.add(it.toRangeDto())
-	}
-	return list
-}
-
-
-fun String.checkEmptyToDouble() : Double = if (this == "") 0.0 else this.toDouble()

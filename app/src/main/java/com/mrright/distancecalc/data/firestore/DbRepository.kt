@@ -49,14 +49,14 @@ class DbRepoImpl @Inject constructor(
 	override suspend fun dbCallBack() : Flow<Resource<Db?>> = callbackFlow {
 		val listener = db.addSnapshotListener { value, error ->
 			error?.let {
-				trySend(Resource.Failure(it))
-				cancel(error.message ?: "", error)
-				errorLog("dbCallBack :: Failed :: ${error.message}")
-				return@addSnapshotListener
-			}
+                trySend(Resource.Failure(it))
+                cancel(error.message ?: "", error)
+                errorLog("dbCallBack :: Failed :: ${error.message}")
+                return@addSnapshotListener
+            }
 
-			trySend(Resource.Success(value?.toObject(Db::class.java)))
-			infoLog("getUserCallBack | Success | $value")
+            trySend(Resource.Success(value?.toObject(Db::class.java)))
+            infoLog("dbCallBack | Success | ${value?.data}")
 		}
 		awaitClose { listener.remove() }
 	}.flowOn(Dispatchers.IO)
@@ -70,6 +70,7 @@ interface DbRepository {
 	suspend fun setFafPercentage(fafPercentage : Double) : Flow<Source>
 
 	suspend fun dbCallBack() : Flow<Resource<Db?>>
+
 }
 
 

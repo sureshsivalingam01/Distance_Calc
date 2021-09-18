@@ -14,7 +14,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.mrright.distancecalc.databinding.HaulageFragmentBinding
 import com.mrright.distancecalc.presentation.haulage_fragment.area.AddAreaFragment
 import com.mrright.distancecalc.presentation.haulage_fragment.location.AddLocationFragment
-import com.mrright.distancecalc.utils.constants.TabFragment
+import com.mrright.distancecalc.utils.constants.HaulageTabs
 import com.mrright.distancecalc.utils.helpers.gone
 import com.mrright.distancecalc.utils.helpers.visible
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,20 +22,20 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HaulageFragment : Fragment() {
 
-	private var _bind : HaulageFragmentBinding? = null
-	private val bind get() = _bind!!
+    private var _bind: HaulageFragmentBinding? = null
+    private val bind get() = _bind!!
 
-	private val fragments = TabFragment.values().toList()
+    private val fragments = HaulageTabs.values().toList()
 
-	private val viewModel : HaulageViewModel by activityViewModels()
+    private val viewModel: HaulageViewModel by activityViewModels()
 
-	private lateinit var dialogFragment : DialogFragment
+    private lateinit var dialogFragment: DialogFragment
 
-	override fun onCreateView(
-		inflater : LayoutInflater,
-		container : ViewGroup?,
-		savedInstanceState : Bundle?,
-	) : View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
 		_bind = HaulageFragmentBinding.inflate(inflater, container, false)
 
 		val sectionsPagerAdapter = HaulagePagerAdapter(this@HaulageFragment)
