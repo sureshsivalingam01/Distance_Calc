@@ -5,6 +5,9 @@ Google Map Distance Calculator with showing polylines in the map, with the start
 
 Using
 
+  Bottom Navigation with Navigation Component
+  TabView with ViewPager
+  Firestore Recyclerview
   AndroidX
   MVVM
   LiveData
